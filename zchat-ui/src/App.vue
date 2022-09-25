@@ -3,7 +3,6 @@
 <template>
   <div class="menu">
     <div class="logo">ZCHAT</div>
-
     <div class="avatar" @click="changeAvatar()">
       <img :src="avatar" draggable="false" />
     </div>
@@ -44,6 +43,10 @@
 <script setup>
 import randomName from "./utils/random-name";
 import { onMounted, ref } from "vue";
+const apiURL = import.meta.env.VITE_API_URL;
+console.log(import.meta.env.VITE_API_URL)
+console.log(import.meta.env.VITE_SOME_KEY)
+const wsURL = apiURL.replace("https:", "wss:").replace("http:", "ws:");
 
 const getNow = () => {
   var d = new Date();
@@ -68,7 +71,7 @@ const list = ref([]);
 const text = ref("");
 const nickName = ref(nickNameValue);
 const avatar = ref(avatarValue);
-const ws = new WebSocket("ws://localhost:8080/ws");
+const ws = new WebSocket(`${wsURL}/ws`);
 
 ws.onmessage = (evt) => {
   let recv = JSON.parse(evt.data);
@@ -95,7 +98,7 @@ const scrollToLast = () => {
 };
 
 const fetchMessages = () => {
-  fetch("http://localhost:8080/messages")
+  fetch(`${apiURL}/messages`)
     .then((res) => res.json())
     .then((res) => {
       list.value = res.sort((a, b) => a.id - b.id);
