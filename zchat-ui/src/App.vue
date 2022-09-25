@@ -44,8 +44,6 @@
 import randomName from "./utils/random-name";
 import { onMounted, ref } from "vue";
 const apiURL = import.meta.env.VITE_API_URL;
-console.log(import.meta.env.VITE_API_URL)
-console.log(import.meta.env.VITE_SOME_KEY)
 const wsURL = apiURL.replace("https:", "wss:").replace("http:", "ws:");
 
 const getNow = () => {
