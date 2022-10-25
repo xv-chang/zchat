@@ -23,7 +23,7 @@
           {{ item.nickName }}
         </div>
         <div class="msg">
-          <p>{{ item.text }}</p>
+          <p @click="handleCopy(item)">{{ item.text }}</p>
           <time>{{ item.sendTime }}</time>
         </div>
       </div>
@@ -61,12 +61,14 @@ const getRandomPic = () => {
 let nickNameValue =
   localStorage.getItem("nickname") || randomName.getNickName();
 let avatarValue = localStorage.getItem("avatar") || getRandomPic();
+let clickCount = 0;
 
 localStorage.setItem("nickname", nickNameValue);
 localStorage.setItem("avatar", avatarValue);
 
 const list = ref([]);
 const text = ref("");
+
 const nickName = ref(nickNameValue);
 const avatar = ref(avatarValue);
 const ws = new WebSocket(`${wsURL}/ws`);
@@ -127,6 +129,29 @@ const sendText = () => {
     ws.send(JSON.stringify(msg));
     text.value = "";
     scrollToLast();
+  }
+};
+
+let clickTimer = null;
+
+const handleCopy = (item) => {
+  clickCount++;
+
+  if (clickCount == 1) {
+    setTimeout(() => {
+      clickCount = 0;
+    }, 300);
+  }
+  if (clickCount == 2) {
+    const input = document.createElement("input");
+    input.setAttribute("readonly", "readonly");
+    input.value = item.text;
+    document.body.appendChild(input);
+    input.setSelectionRange(0, 9999); // 防止 ios 下没有全选内容而无法复制
+    input.select();
+    document.execCommand("copy");
+    document.body.removeChild(input);
+    alert("已复制内存到剪切板");
   }
 };
 

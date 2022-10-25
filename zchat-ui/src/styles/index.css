@@ -225,9 +225,13 @@ div::-webkit-scrollbar-track {
 }
 
 .msg p {
-    font-size: 0.8rem;
-    margin: 0 0 0.2rem 0;
+    font-size: .8rem;
+    margin: 0 0 .2rem;
     color: #777;
+
+    white-space: normal;
+    word-break: break-all;
+
 
 }
 

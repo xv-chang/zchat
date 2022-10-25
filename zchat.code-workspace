@@ -7,5 +7,7 @@
 			"path": "zchat-ui"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "zchat-ui"
+	}
 }
